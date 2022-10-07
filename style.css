@@ -1,0 +1,11 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("https://img.lovepik.com/background/20211021/large/lovepik-simple-line-background-image_401419097.jpg");
+}
+
+.form {
+    margin: 0 auto;
+    width: 50%;
+    border: 2 solid black;
+}
