@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@2.31.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>ToDo</title>
 </head>
@@ -20,11 +21,15 @@
                 <input type="text" placeholder="Search" class="input min-w-min input-bordered" />
               </div>
               <div class="hidden md:block">
-                <label class="btn btn-ghost btn-circle avatar">
+                <a 
+                    class="btn btn-ghost btn-circle avatar"
+                    href="https://github.com/chaldrak"
+                    target="_blank"
+                >
                   <div class="w-10 rounded-full">
-                    <img src="https://placeimg.com/80/80/people" />
+                    <img src="https://w7.pngwing.com/pngs/240/158/png-transparent-social-media-computer-icons-github-fork-github-purple-text-social-media-thumbnail.png" />
                   </div>
-                </label>
+                </a>
               </div>
             </div>
         </div>
@@ -54,14 +59,37 @@
                         </label> 
                     </div>
                     <button 
-                        class="btn btn-primary"
+                        class="btn btn-disabled text-gray-500"
                         id="btn"
                     >
                         Add Todo
                     </button>
                 </div>
             </div>
-            <div class="h-32 md:col-span-3 bg-indigo-500">2</div>
+            <div class="md:col-span-3 mx-[5%] my-[5%] px-[5%] text-gray-50 font-base">
+                <div class="overflow-x-auto w-full mb-2" id="todos">
+                    <div 
+                        id="todo-card" 
+                        class="w-full bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 px-5 py-2 inline-flex items-center justify-between rounded-md shadow-sm"
+                    >
+                        <div class="w-full items-center flex space-x-5 ">
+                            <input
+                                type="checkbox" 
+                                class="checkbox border border-gray-50"
+                            />
+                            <p id="todo-name">
+                                Zemlak, Daniel and Leannon
+                            </p>
+                        </div>
+                        <button 
+                            id="delete"
+                            class="btn text-gray-50 btn-error btn-xs"
+                        >
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
