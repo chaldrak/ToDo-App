@@ -3,8 +3,9 @@ window.onload = function () {
     let btn = document.getElementById("btn");
     let input_count = document.getElementById("input-count");
     let todos = document.getElementById("todos");
+    let default_box = document.getElementById("default-message");
     input.value = "";
-
+    console.log(default_box)
     // Get the todos in local storage
     let todos_local = localStorage.getItem("todos");
     
@@ -16,6 +17,18 @@ window.onload = function () {
     }
     else {
         todos_tab = [];
+    }
+
+    // Show default message if nothing to do
+    showDefaultMessage()
+
+    function showDefaultMessage() {
+        if (todos_tab.length === 0) {
+            default_box.style.display = "block";
+        }
+        else {
+            default_box.style.display = "none";
+        }
     }
 
     // Get the size of input
@@ -33,6 +46,8 @@ window.onload = function () {
         input_count.innerHTML = 0;
         isInput(input);
         display(todos_tab.at(todos_tab.length-1));
+
+        showDefaultMessage()
 
         var close = document.getElementsByClassName("delete");
         for (let i = 0; i < close.length; i++) {
@@ -154,6 +169,7 @@ window.onload = function () {
             localStorage.setItem("todos", JSON.stringify(todos_tab));
             div.style.display = "none"
         }
+        showDefaultMessage()
     }
 
     function updateTodo(element, isDone) {
