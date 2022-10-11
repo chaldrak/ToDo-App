@@ -3,17 +3,24 @@ window.onload = function () {
     let btn = document.getElementById("btn");
     let input_count = document.getElementById("input-count");
     let todos = document.getElementById("todos");
+    let todos_found = document.getElementById("todos_found");
     let default_box = document.getElementById("default-message");
+    let search = document.getElementById("search");
+    let not_found = document.getElementById("not-found");
+    let keyword = document.getElementById("keyword");
+    let not_found_text = document.getElementById("not-found-text");
     input.value = "";
-    console.log(default_box)
+
     // Get the todos in local storage
     let todos_local = localStorage.getItem("todos");
     
     if (todos_local) {
         todos_tab = JSON.parse(todos_local);
+        todos_found.style.display = "none";
         todos_tab.forEach(todo => {
-            display(todo);
+            display(todo, todos);
         });
+        searchByTodoName();
     }
     else {
         todos_tab = [];
@@ -45,7 +52,10 @@ window.onload = function () {
         input.value = ""
         input_count.innerHTML = 0;
         isInput(input);
-        display(todos_tab.at(todos_tab.length-1));
+        todos.style.display = "block";
+        todos_found.style.display = "none";
+        search.value = ""
+        display(todos_tab.at(todos_tab.length-1), todos);
 
         showDefaultMessage()
 
@@ -72,7 +82,7 @@ window.onload = function () {
     };
 
     // Function to display the todos
-    function display (todo) {
+    function display (todo, div) {
         let div1 = document.createElement("div");
         let div2 = document.createElement("div")
         let p = document.createElement("p");
@@ -114,47 +124,43 @@ window.onload = function () {
         }
         
         div1.appendChild(span);
-        todos.appendChild(div1);
+        div.appendChild(div1);
     };
-
-    // Delete todo
-    var close = document.getElementsByClassName("delete");
-    for (let i = 0; i < close.length; i++) {
-        close[i].onclick = function() {
-            
-            removeFromLocal(close[i])
-            
-        }
-    }
 
     // Change style of card when todo is done
     var list = document.querySelector("#todos");
-    list.addEventListener('click', function (e) {
-        if(e.target.tagName === "INPUT") {
-            var div1 = e.target.parentElement;
-            var div = div1.parentElement;
-            var isChecked = e.target.getAttribute("checked");
-            var p = div1.lastElementChild;
-            var isDone
-            if (isChecked == null) {
-                e.target.setAttribute("checked", true);
-                isDone = true;
-                p.classList.add("line-through");
-                div.classList.replace("from-indigo-400", "from-gray-600");
-                div.classList.replace("via-purple-400", "via-gray-300");
-                div.classList.replace("to-indigo-400", "to-gray-600");
+    var list_search = document.querySelector("#todos_found");
+    checkIfDone(list);
+    checkIfDone(list_search);
+
+    function checkIfDone(params) {
+        params.addEventListener('click', function (e) {
+            if(e.target.tagName === "INPUT") {
+                var div1 = e.target.parentElement;
+                var div = div1.parentElement;
+                var isChecked = e.target.getAttribute("checked");
+                var p = div1.lastElementChild;
+                var isDone
+                if (isChecked == null) {
+                    e.target.setAttribute("checked", true);
+                    isDone = true;
+                    p.classList.add("line-through");
+                    div.classList.replace("from-indigo-400", "from-gray-600");
+                    div.classList.replace("via-purple-400", "via-gray-300");
+                    div.classList.replace("to-indigo-400", "to-gray-600");
+                }
+                else {
+                    e.target.removeAttribute("checked");
+                    isDone = false;
+                    p.classList.remove("line-through");
+                    div.classList.replace("from-gray-600", "from-indigo-400");
+                    div.classList.replace("via-gray-300", "via-purple-400");
+                    div.classList.replace("to-gray-600", "to-indigo-400");
+                }
+                updateTodo(div, isDone);
             }
-            else {
-                e.target.removeAttribute("checked");
-                isDone = false;
-                p.classList.remove("line-through");
-                div.classList.replace("from-gray-600", "from-indigo-400");
-                div.classList.replace("via-gray-300", "via-purple-400");
-                div.classList.replace("to-gray-600", "to-indigo-400");
-            }
-            updateTodo(div, isDone);
-        }
-    });
+        });
+    }
 
     // Remove todo from local
     function removeFromLocal(element) {
@@ -182,5 +188,62 @@ window.onload = function () {
 
         localStorage.removeItem("todos");
         localStorage.setItem("todos", JSON.stringify(todos_tab));
+    }
+
+    // Search function
+    function searchByTodoName() {
+        var todos_find = []
+        search.addEventListener("input", function(e) {
+            let key_word = this.value.toUpperCase();
+            todos_find = todos_tab.filter(todo => todo.name.toUpperCase().includes(key_word));
+
+            todos_found.replaceChildren();
+            
+            if (key_word === '') {
+                todos.style.display = "block";
+                todos.replaceChildren();
+                todos_tab.forEach(todo => {
+                    display(todo, todos);
+                });
+                todos_found.style.display = "none";
+            }
+            else {
+                todos.style.display = "none";
+                todos_found.style.display = "block";
+            }
+
+            todos_find.forEach(todo => {
+                display(todo, todos_found);
+            });
+
+            var close = document.getElementsByClassName("delete");
+            for (let i = 0; i < close.length; i++) {
+                close[i].onclick = function() {
+                    
+                    removeFromLocal(close[i])
+                    
+                }
+            }
+
+            if (todos_find.length === 0) {
+                todos_found.prepend(not_found);
+                not_found_text.innerHTML = "Nothing matches with : "
+            }
+            else {
+                todos_found.prepend(not_found);
+                not_found_text.innerHTML = "Todos found for : "
+            }
+            keyword.innerHTML = key_word.toLowerCase();
+        })
+    };
+
+    // Delete todo
+    var close = document.getElementsByClassName("delete");
+    for (let i = 0; i < close.length; i++) {
+        close[i].onclick = function() {
+            
+            removeFromLocal(close[i])
+            
+        }
     }
 }

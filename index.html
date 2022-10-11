@@ -29,7 +29,7 @@
             </div>
             <div class="flex-none gap-2">
               <div class="form-control">
-                <input type="text" placeholder="Search" class="input min-w-min input-bordered" />
+                <input type="text" id="search" placeholder="Search" class="input min-w-min input-bordered" />
               </div>
               <div class="hidden md:block">
                 <a 
@@ -86,6 +86,16 @@
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <span>Nothing to do currently</span><span class="text-xl"> ⛱</span>
+                        </div>
+                    </div>
+                </div>
+                <div 
+                    class="overflow-x-auto w-full" id="todos_found"
+                >
+                    <div class="alert bg-transparent" id="not-found">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span id="not-found-text"></span><span id="keyword" class="badge badge-secondary"></span>
                         </div>
                     </div>
                 </div>
